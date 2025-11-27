@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIDS - Premium 3D Printing Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #667eea;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float-particle 20s infinite ease-in-out;
+        }
+
+        @keyframes float-particle {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            margin-bottom: 20px;
+            font-weight: 800;
+            animation: fadeInUp 1s ease, colorShift 8s ease-in-out infinite;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24, #ff6b6b);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hero h1:hover {
+            background: linear-gradient(45deg, #f9ca24, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        @keyframes colorShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            25% {
+                background-position: 50% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            75% {
+                background-position: 50% 50%;
+            }
+        }
+
+        @keyframes printLayer {
+            0% {
+                height: 0%;
+                opacity: 0;
+            }
+            100% {
+                height: 100%;
+                opacity: 1;
+            }
+        }
+
+        .hero h1::before {
+            content: 'Transform Ideas Into Reality';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            overflow: hidden;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: printLayer 3s ease-out forwards;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease 0.2s both;
+            max-width: 700px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
+            padding: 18px 50px;
+            font-size: 18px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            animation: fadeInUp 1s ease 0.4s both;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .interactive-sphere {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 40px;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .sphere {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 20px 60px rgba(102, 126, 234, 0.4),
+                inset -20px -20px 40px rgba(0, 0, 0, 0.2),
+                inset 20px 20px 40px rgba(255, 255, 255, 0.1);
+            animation: float 3s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        .liquid {
+            position: absolute;
+            bottom: 0;
+            left: -10%;
+            width: 120%;
+            height: 70%;
+            background: linear-gradient(180deg, 
+                rgba(255, 107, 107, 0.85) 0%, 
+                rgba(249, 202, 36, 0.9) 40%, 
+                rgba(78, 205, 196, 0.85) 100%);
+            transition: all 0.2s ease-out;
+            transform-origin: center center;
+        }
+
+        .liquid::before,
+        .liquid::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -150%;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 45%;
+            animation: wave 4s linear infinite;
+        }
+
+        .liquid::before {
+            left: -50%;
+            animation-delay: 0s;
+        }
+
+        .liquid::after {
+            left: -50%;
+            animation-delay: -2s;
+            opacity: 0.6;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .interactive-sphere:hover .liquid {
+            height: 80%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .eyes {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 40px;
+            z-index: 2;
+        }
+
+        .eye {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .pupil {
+            width: 24px;
+            height: 24px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+        }
+
+        .pupil::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 6px;
+            left: 8px;
+        }
+
+        section {
+            position: relative;
+            padding: 100px 50px;
+            z-index: 2;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .service-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .service-card p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+            border-radius: 20px;
+            overflow: visible;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            padding: 30px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(102, 126, 234, 0.4);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(118, 75, 162, 0.5));
+        }
+
+        .gallery-item .icon {
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        .gallery-item > div {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Rocket flying animation */
+        @keyframes rocketLaunch {
+            0% {
+                transform: translateY(0) rotate(-45deg) scale(1);
+            }
+            20% {
+                transform: translateY(-50px) rotate(-30deg) scale(1.1);
+            }
+            40% {
+                transform: translateY(-100px) translateX(50px) rotate(-15deg) scale(1.2);
+            }
+            60% {
+                transform: translateY(-120px) translateX(150px) rotate(20deg) scale(1.3);
+            }
+            80% {
+                transform: translateY(-80px) translateX(250px) rotate(45deg) scale(1.2);
+            }
+            100% {
+                transform: translateY(50px) translateX(350px) rotate(90deg) scale(1.1);
+            }
+        }
+
+        @keyframes rocketTrail {
+            0% {
+                height: 40px;
+                opacity: 0.9;
+            }
+            100% {
+                height: 50px;
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes explosionEffect {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes robotImpact {
+            0%, 100% {
+                transform: rotate(0deg) translateX(0);
+            }
+            10% {
+                transform: rotate(-20deg) translateX(-30px);
+            }
+            30% {
+                transform: rotate(15deg) translateX(20px);
+            }
+            50% {
+                transform: rotate(-10deg) translateX(-15px);
+            }
+            70% {
+                transform: rotate(5deg) translateX(10px);
+            }
+        }
+
+        @keyframes robotFall {
+            0% {
+                transform: rotate(0deg) translateY(0);
+            }
+            100% {
+                transform: rotate(90deg) translateY(30px);
+            }
+        }
+
+        /* Robot walking animation */
+        @keyframes robotWalk {
+            0%, 100% {
+                transform: translateX(0) rotate(0deg);
+            }
+            25% {
+                transform: translateX(-20px) rotate(-10deg);
+            }
+            50% {
+                transform: translateX(20px) rotate(10deg);
+            }
+            75% {
+                transform: translateX(-10px) rotate(-5deg);
+            }
+        }
+
+        @keyframes robotJump {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+
+        /* Gaming console break */
+        @keyframes consoleCrack {
+            0% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            30% {
+                transform: scale(1.1);
+                filter: brightness(1.3);
+            }
+            50% {
+                transform: scale(0.95);
+                filter: brightness(0.7);
+            }
+            100% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+        }
+
+        @keyframes pieceExplode1 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-80px, -60px) rotate(-180deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pieceExplode2 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(80px, -60px) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pieceExplode3 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-60px, 70px) rotate(-90deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pieceExplode4 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(60px, 70px) rotate(90deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pieceExplode5 {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(0, -100px) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Gear spinning and breaking out */
+        @keyframes gearSpin {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(1800deg) scale(1.5);
+            }
+            100% {
+                transform: rotate(3600deg) scale(2) translateY(-150px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes boxShake {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5px, -5px); }
+            20% { transform: translate(5px, 5px); }
+            30% { transform: translate(-5px, 5px); }
+            40% { transform: translate(5px, -5px); }
+            50% { transform: translate(-5px, -5px); }
+            60% { transform: translate(5px, 5px); }
+            70% { transform: translate(-5px, 5px); }
+            80% { transform: translate(5px, -5px); }
+            90% { transform: translate(-5px, -5px); }
+        }
+
+        @keyframes boxCrack {
+            0% {
+                box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+            }
+            100% {
+                box-shadow: 0 5px 30px rgba(255, 0, 0, 0.8), inset 0 0 20px rgba(255, 0, 0, 0.5);
+                border-color: rgba(255, 0, 0, 0.8);
+            }
+        }
+
+        /* Trophy spin */
+        @keyframes trophySpin {
+            0% {
+                transform: rotateY(0deg) scale(1);
+            }
+            100% {
+                transform: rotateY(1080deg) scale(1.3);
+            }
+        }
+
+        /* Art float */
+        @keyframes artFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-30px) rotate(120deg);
+            }
+            66% {
+                transform: translateY(-20px) rotate(240deg);
+            }
+        }
+
+        .gallery-item .icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            margin-bottom: 30px;
+            font-size: 18px;
+            line-height: 2;
+            color: #555;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1000px;
+            margin: 80px auto;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .stat-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stat-item h3 {
+            font-size: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .stat-item p {
+            font-size: 18px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            color: #333;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 18px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            background: #f8f9fa;
+            color: #666;
+        }
+
+        footer p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            nav {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            section {
+                padding: 60px 20px;
+            }
+            
+            .section-title {
+                font-size: 36px;
+            }
+        }
+
+        /* Rain effect */
+        .rain-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+            display: none;
+        }
+
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: linear-gradient(to bottom, transparent, rgba(102, 126, 234, 0.6), transparent);
+            animation: fall linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background" id="animatedBg"></div>
+    <div class="particles" id="particles"></div>
+
+    <nav>
+        <div class="logo">VIDS</div>
+        <div class="nav-links">
+            <a href="#services">Services</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Transform Ideas Into Reality</h1>
+        <p>Premium 3D printing services for custom prints, rapid prototyping, and everything in between</p>
+        <div class="interactive-sphere">
+            <div class="sphere">
+                <div class="liquid"></div>
+            </div>
+            <div class="eyes">
+                <div class="eye">
+                    <div class="pupil" id="leftPupil"></div>
+                </div>
+                <div class="eye">
+                    <div class="pupil" id="rightPupil"></div>
+                </div>
+            </div>
+        </div>
+        <a href="#contact" class="cta-button">Start Your Project</a>
+    </section>
+
+    <section id="services">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Professional 3D printing solutions tailored to your needs</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3>Custom Prints</h3>
+                <p>Bring your unique designs to life with precision 3D printing. From intricate models to functional parts, we handle projects of any complexity with attention to detail.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3>Rapid Prototyping</h3>
+                <p>Speed up your product development with fast, accurate prototypes. Test and iterate your designs quickly to get to market faster.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔧</div>
+                <h3>Material Selection</h3>
+                <p>Choose from a wide range of materials including PLA, ABS, PETG, and specialty filaments to match your project requirements perfectly.</p>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <h3>1000+</h3>
+                <p>Projects Completed</p>
+            </div>
+            <div class="stat-item">
+                <h3>24hrs</h3>
+                <p>Fast Turnaround</p>
+            </div>
+            <div class="stat-item">
+                <h3>99%</h3>
+                <p>Client Satisfaction</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" style="background: #f8f9fa; position: relative;">
+        <div class="rain-container" id="rainContainer"></div>
+        <h2 class="section-title">Our Work</h2>
+        <p class="section-subtitle">Explore our portfolio of completed projects</p>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="triggerAnimation(this, 'rocket')">
+                <div>
+                    <div class="icon">🚀</div>
+                    <div>Aerospace Parts</div>
+                </div>
+            </div>
+            <div class="gallery-item" onclick="triggerAnimation(this, 'robot')">
+                <div>
+                    <div class="icon">🤖</div>
+                    <div>Robotics Components</div>
+                </div>
+            </div>
+            <div class="gallery-item" onclick="triggerAnimation(this, 'gaming')">
+                <div>
+                    <div class="icon">🎮</div>
+                    <div>Gaming Accessories</div>
+                </div>
+            </div>
+            <div class="gallery-item" onclick="triggerAnimation(this, 'gear')">
+                <div>
+                    <div class="icon">⚙️</div>
+                    <div>Industrial Prototypes</div>
+                </div>
+            </div>
+            <div class="gallery-item" onclick="triggerAnimation(this, 'trophy')">
+                <div>
+                    <div class="icon">🏆</div>
+                    <div>Custom Trophies</div>
+                </div>
+            </div>
+            <div class="gallery-item" onclick="triggerAnimation(this, 'art')">
+                <div>
+                    <div class="icon">🎭</div>
+                    <div>Art & Sculptures</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title">About VIDS</h2>
+        <p class="section-subtitle">Your trusted partner in 3D printing innovation</p>
+        <div class="about-content">
+            <p>
+                At VIDS, we're passionate about transforming ideas into tangible reality. Founded by a team of engineers and designers, we combine technical expertise with creative vision to deliver exceptional 3D printing services.
+            </p>
+            <p>
+                Our state-of-the-art facility is equipped with the latest 3D printing technology, allowing us to handle projects ranging from small prototypes to large-scale productions. We pride ourselves on precision, quality, and customer satisfaction.
+            </p>
+            <p>
+                Whether you're an entrepreneur with a product idea, an engineer needing prototypes, or an artist bringing sculptures to life, we're here to make it happen. Every project receives personalized attention and expert guidance from concept to completion.
+            </p>
+        </div>
+    </section>
+
+    <section id="contact" style="background: #f8f9fa;">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Ready to start your project? Let's talk!</p>
+        <form class="contact-form">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="your.email@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>Project Details</label>
+                <textarea placeholder="Tell us about your project..."></textarea>
+            </div>
+            <button type="submit" class="submit-button">Send Message</button>
+        </form>
+    </section>
+
+    <footer>
+        <div class="footer-logo">VIDS</div>
+        <p>© 2025 VIDS 3D Printing Services. All rights reserved.</p>
+        <p>Transforming ideas into reality, one layer at a time.</p>
+    </footer>
+
+    <script>
+        // Store reference to robot box
+        let robotBox = null;
+        
+        // Animation trigger function
+        function triggerAnimation(element, type) {
+            const icon = element.querySelector('.icon');
+            
+            // Store robot box reference
+            if (type === 'robot') {
+                robotBox = element;
+            }
+            
+            switch(type) {
+                case 'rocket':
+                    // Create rocket with trail container
+                    const rocketContainer = document.createElement('div');
+                    rocketContainer.style.position = 'fixed';
+                    rocketContainer.style.zIndex = '1000';
+                    rocketContainer.style.pointerEvents = 'none';
+                    
+                    const flyingRocket = document.createElement('div');
+                    flyingRocket.textContent = '🚀';
+                    flyingRocket.style.fontSize = '64px';
+                    flyingRocket.style.position = 'absolute';
+                    flyingRocket.style.top = '0';
+                    flyingRocket.style.left = '0';
+                    
+                    const trail = document.createElement('div');
+                    trail.style.position = 'absolute';
+                    trail.style.width = '8px';
+                    trail.style.height = '40px';
+                    trail.style.background = 'linear-gradient(to top, orange, red, transparent)';
+                    trail.style.top = '32px';
+                    trail.style.left = '28px';
+                    trail.style.transformOrigin = 'top center';
+                    trail.style.animation = 'rocketTrail 0.3s ease-in-out infinite alternate';
+                    
+                    rocketContainer.appendChild(flyingRocket);
+                    rocketContainer.appendChild(trail);
+                    
+                    // Get starting position
+                    const startRect = icon.getBoundingClientRect();
+                    rocketContainer.style.left = startRect.left + 'px';
+                    rocketContainer.style.top = startRect.top + 'px';
+                    
+                    document.body.appendChild(rocketContainer);
+                    icon.style.opacity = '0';
+                    
+                    // Animate rocket path
+                    rocketContainer.style.transition = 'all 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    rocketContainer.style.transform = 'translate(350px, 50px) rotate(90deg)';
+                    
+                    // Animate through keyframes manually for smooth trail
+                    let progress = 0;
+                    const animationDuration = 2500;
+                    const startTime = Date.now();
+                    
+                    const animate = () => {
+                        const elapsed = Date.now() - startTime;
+                        progress = Math.min(elapsed / animationDuration, 1);
+                        
+                        if (progress < 1) {
+                            // Calculate position along curved path
+                            const x = progress * 350;
+                            const y = -120 * Math.sin(progress * Math.PI) + 50 * progress;
+                            const rotation = -45 + (progress * 135);
+                            
+                            rocketContainer.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+                            requestAnimationFrame(animate);
+                        }
+                    };
+                    animate();
+                    
+                    // Crash into robot after 2.5s
+                    setTimeout(() => {
+                        trail.style.display = 'none';
+                        
+                        // Create explosion
+                        const explosion = document.createElement('div');
+                        explosion.textContent = '💥';
+                        explosion.style.position = 'fixed';
+                        explosion.style.fontSize = '80px';
+                        explosion.style.zIndex = '1001';
+                        
+                        if (robotBox) {
+                            const robotRect = robotBox.getBoundingClientRect();
+                            explosion.style.left = robotRect.right - 50 + 'px';
+                            explosion.style.top = robotRect.top + robotRect.height/2 - 40 + 'px';
+                            
+                            // Robot gets hit
+                            const robotIcon = robotBox.querySelector('.icon');
+                            robotBox.style.animation = 'robotImpact 1s ease-out';
+                            robotIcon.style.animation = 'robotFall 1s ease-out 0.3s forwards';
+                            
+                            setTimeout(() => {
+                                robotBox.style.animation = '';
+                                robotIcon.style.animation = '';
+                                robotIcon.style.transform = '';
+                            }, 1500);
+                        } else {
+                            const rect = rocketContainer.getBoundingClientRect();
+                            explosion.style.left = rect.left + 'px';
+                            explosion.style.top = rect.top + 'px';
+                        }
+                        
+                        explosion.style.animation = 'explosionEffect 0.8s ease-out forwards';
+                        document.body.appendChild(explosion);
+                        
+                        flyingRocket.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            explosion.remove();
+                            rocketContainer.remove();
+                            icon.style.opacity = '1';
+                        }, 1500);
+                    }, 2500);
+                    break;
+                    
+                case 'robot':
+                    // Robot gets up and walks
+                    icon.style.animation = 'robotJump 0.5s ease, robotWalk 2s ease 0.5s';
+                    setTimeout(() => {
+                        icon.style.animation = '';
+                    }, 2500);
+                    break;
+                    
+                case 'gaming':
+                    // Console explodes into pieces
+                    icon.style.animation = 'consoleCrack 0.3s ease 3';
+                    
+                    setTimeout(() => {
+                        const pieces = ['🎮', '🕹️', '📺', '🔌', '💿'];
+                        const animations = ['pieceExplode1', 'pieceExplode2', 'pieceExplode3', 'pieceExplode4', 'pieceExplode5'];
+                        
+                        icon.innerHTML = pieces.map((piece, i) => 
+                            `<span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); animation: ${animations[i]} 1.2s ease-out forwards;">${piece}</span>`
+                        ).join('');
+                        
+                        // Show explosion
+                        setTimeout(() => {
+                            const explosion = document.createElement('div');
+                            explosion.textContent = '💥';
+                            explosion.style.fontSize = '60px';
+                            explosion.style.animation = 'explosionEffect 0.6s ease-out forwards';
+                            icon.appendChild(explosion);
+                        }, 300);
+                        
+                        setTimeout(() => {
+                            icon.innerHTML = '🎮';
+                        }, 1500);
+                    }, 900);
+                    break;
+                    
+                case 'gear':
+                    // Gear spins so fast it breaks the box
+                    element.style.animation = 'boxShake 2s ease, boxCrack 2s ease';
+                    icon.style.animation = 'gearSpin 3s ease-out forwards';
+                    setTimeout(() => {
+                        element.style.animation = '';
+                        icon.style.animation = '';
+                        icon.style.opacity = '1';
+                        icon.style.transform = '';
+                    }, 3000);
+                    break;
+                    
+                case 'trophy':
+                    // Trophy spins elegantly
+                    icon.style.animation = 'trophySpin 2s ease-in-out';
+                    setTimeout(() => {
+                        icon.style.animation = '';
+                    }, 2000);
+                    break;
+                    
+                case 'art':
+                    // Art mask floats and rotates
+                    icon.style.animation = 'artFloat 3s ease-in-out';
+                    setTimeout(() => {
+                        icon.style.animation = '';
+                    }, 3000);
+                    break;
+            }
+        }
+
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 5 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+            this.reset();
+        });
+
+        // Mouse follow effect for background and sphere eyes + liquid
+        const animatedBg = document.getElementById('animatedBg');
+        const leftPupil = document.getElementById('leftPupil');
+        const rightPupil = document.getElementById('rightPupil');
+        const sphere = document.querySelector('.interactive-sphere');
+        const liquid = document.querySelector('.liquid');
+        
+        document.addEventListener('mousemove', (e) => {
+            // Deform background based on mouse position
+            const bgX = (e.clientX / window.innerWidth) * 100;
+            const bgY = (e.clientY / window.innerHeight) * 100;
+            const rotation = ((e.clientX / window.innerWidth) - 0.5) * 20;
+            
+            animatedBg.style.background = `
+                radial-gradient(circle at ${bgX}% ${bgY}%, 
+                    #764ba2 0%, 
+                    #667eea 30%, 
+                    #5568d3 60%, 
+                    #764ba2 100%)
+            `;
+            animatedBg.style.transform = `scale(${1 + Math.abs(rotation) * 0.01}) rotate(${rotation * 0.1}deg)`;
+            
+            // Make eyes follow cursor
+            if (sphere) {
+                const sphereRect = sphere.getBoundingClientRect();
+                const sphereCenterX = sphereRect.left + sphereRect.width / 2;
+                const sphereCenterY = sphereRect.top + sphereRect.height / 2;
+                
+                const angle = Math.atan2(e.clientY - sphereCenterY, e.clientX - sphereCenterX);
+                const distance = Math.min(13, Math.hypot(e.clientX - sphereCenterX, e.clientY - sphereCenterY) / 20);
+                
+                const pupilX = Math.cos(angle) * distance;
+                const pupilY = Math.sin(angle) * distance;
+                
+                leftPupil.style.transform = `translate(calc(-50% + ${pupilX}px), calc(-50% + ${pupilY}px))`;
+                rightPupil.style.transform = `translate(calc(-50% + ${pupilX}px), calc(-50% + ${pupilY}px))`;
+                
+                // Deform liquid based on mouse position relative to sphere
+                const relativeX = (e.clientX - sphereCenterX) / (sphereRect.width / 2);
+                const relativeY = (e.clientY - sphereCenterY) / (sphereRect.height / 2);
+                const distanceFromCenter = Math.sqrt(relativeX * relativeX + relativeY * relativeY);
+                
+                if (distanceFromCenter < 1.8) {
+                    const tilt = relativeX * 20;
+                    const verticalShift = relativeY * 10;
+                    liquid.style.transform = `rotate(${tilt}deg) translateY(${-verticalShift}px)`;
+                    liquid.style.height = `${70 + Math.abs(relativeY) * 10}%`;
+                } else {
+                    liquid.style.transform = 'rotate(0deg) translateY(0)';
+                    liquid.style.height = '70%';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
